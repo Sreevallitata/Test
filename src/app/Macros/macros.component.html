@@ -1,0 +1,54 @@
+<div class="image2">
+
+  <div class="parent-container">
+    <div class="child-container">
+      <h2><b><strong>Know your "MACROS"!!
+      </strong></b></h2><br>
+<!--      <form>-->
+        <div class="form-group">
+          <p><strong>Enter the recpie here and know the macro values</strong></p>
+          <a href="home.component.html">Back</a>
+
+          <form>
+            <div class="form-group">
+              <div class="form-group col-lg-6 col-lg-offset-3 input-group">
+                <input #recipe class="form-control" placeholder="Recipe name" type="text">
+                <span class="input-group-addon">-</span>
+
+              </div>
+              <br>
+              <button (click)="getVenues()" class="btn btn-primary col-lg-2 col-lg-offset-5 gobtn" type="button">
+                Search
+              </button>
+
+            </div>
+          </form>
+        </div>
+
+
+        <br><br>
+        <div class="container">
+          <div class="col">
+            <div class="panel panel-default col">
+              <div class="panel-heading"><b>Macros</b></div>
+              <div class="panel-body">
+                <div *ngFor="let recipe of recipeList" class="list-group-item clearfix">
+                  <div class="pull-left">
+                    <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+                    <a href="{{recipe.url}}" class="list-group-item-text">{{ recipe.url }}</a>
+                  </div>
+
+                  <span class="pull-right">
+          <img src="{{recipe.icon}}" style="width: 70px; height: 50px;" align="center"/>
+
+      </span>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

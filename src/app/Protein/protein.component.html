@@ -1,0 +1,113 @@
+<div class="image2">
+
+  <div class="parent-container">
+    <div class="child-container">
+      <form>
+        <div class="form-group">
+          <h3><strong>Choose your Protein</strong></h3>
+
+          <form action="/action_page.php">
+            <input type="checkbox" id="Whey Protein Powder" >
+            <label for="Whey Protein Powder"> Whey Protein Powder</label><br>
+            <input type="checkbox" id="Plant-based Protein Powder" >
+            <label for="Plant-based Protein Powder"> Plant-based Protein Powder</label><br>
+            <input type="checkbox" id="Protein Bars" >
+            <label for="Protein Bars"> Protein Bars</label><br><br>
+          </form>
+
+
+          <br>
+          <button (click)="getVenues()" class="btn btn primary col-lg-2 col-lg-offset-5 " type="button">Go ! </button>
+
+        </div>
+      </form>
+    </div>
+  </div><br><br>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="panel panel-default col">
+          <div class="panel-heading"><b>Product Type</b></div>
+          <div class="panel-body">
+            <div *ngFor="let item of foodList" class="list-group-item clearfix">
+              <div class="pull-left">
+                <h4 class="list-group-item-heading">{{ item.name }}</h4>
+                <a href="{{item.url}}" class="list-group-item-text">{{ item.url }}</a>
+              </div>
+
+              <span class="pull-right">
+<!--          <img src="{{item.icon}}" style="width: 70px; height: 50px;" align="center"/>-->
+
+      </span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="panel panel-default col">
+              <div class="panel-heading"><b>Ingredients</b></div>
+              <div class="panel-body">
+
+                <div *ngFor="let item of foodList" class="list-group-item clearfix">
+                  <div class="pull-left">
+                    <div class="row">
+                      <div class="col-lg-4">
+                    <h4 class="list-group-item-heading" *ngFor="let ingredient of item.ingredients">
+                      <p>{{ ingredient.text }}</p>
+<!--                      <p>Weight : {{ ingredient.weight }}</p>-->
+                    </h4>
+                  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--            <div class="container">-->
+              <!--              <div class="row">-->
+
+              <!--    </div>-->
+              <!--  </div>-->
+
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="panel panel-default col">
+              <div class="panel-heading"><b>Nutritional Values</b></div>
+              <div class="panel-body">
+                <div *ngFor="let item of foodList" class="list-group-item clearfix">
+                  <div class="pull-left">
+                    <div class="row">
+                      <div class="col-lg-4">
+                    <h4 class="list-group-item-heading" *ngFor="let nutri of item.nutrients | keyvalue">
+<!--                      <p>{{nutri.key}}</p>-->
+                      <p>{{ nutri.value.label }}</p>
+                      <p>{{ nutri.value.quantity }}{{ nutri.value.unit }}</p>
+                    </h4>
+<!--                    <a href="{{item.url}}" class="list-group-item-text">{{ item.url }}</a>-->
+                  </div>
+                    </div>
+                  </div>
+
+                  <span class="pull-right">
+<!--          <img src="{{recipe.icon}}" style="width: 70px; height: 50px;" align="center"/>-->
+
+      </span>
+
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
