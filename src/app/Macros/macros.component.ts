@@ -1,71 +1,48 @@
+// @ts-ignore
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+// @ts-ignore
 import {HttpClient} from '@angular/common/http';
+import {Title} from "@angular/platform-browser";
 
 // @ts-ignore
-// noinspection AngularMissingOrInvalidDeclarationInModule
+// @ts-ignore
 @Component({
-  selector: 'app-Macros',
+  selector: 'app-macros',
   templateUrl: './macros.component.html',
   styleUrls: ['./macros.component.css']
 })
-export class MacrosComponent implements OnInit {
-    ngOnInit() {
-        // throw new Error("Method not implemented.");
-    }
-  @ViewChild('recipe') recipes: ElementRef;
-  @ViewChild('place') places: ElementRef;
-  recipeValue: any;
-  placeValue: any;
-  venueList = [];
-  recipeList = [];
-  formattedAddress = [];
+export class MacrosComponent implements OnInit{
+  @ViewChild('recipe') userSearch: ElementRef;     // get the search box element
+  userValue: any;
 
-  currentLat: any;
-  currentLong: any;
-  geolocationPosition: any;
+  macroList = [];                // holds returned values from USDA API
 
-  recepieApi = 'https://api.edamam.com/search?q=';
-  recepieAppid = '&app_id=20142051';
-  recepieKey = '&app_key=f51e46d3bf6aa3d4dfe02c3d07b1c497';
+  USDAKey: string;
 
-  placesApi = 'https://api.foursquare.com/v2/venues/search?';
-  clientdId = 'client_id=U144GWH2VKUIQ1TXDUN0CYXD2FFH5IWB1GGJX3DBXNXXSJ5I';
-  clientSecret = '&client_secret=0G5HVFCPORV4KPCGNQIYDA4Y5J3KZR512MMCMXTNXHA4WLME';
-  version = '&v=20180323';
-  near = '&near=';
-  query = '&query=';
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient, private titleService: Title) {
   }
 
-
-
-  getVenues() {
-
-    this.recipeValue = this.recipes.nativeElement.value;
-    this.placeValue = this.places.nativeElement.value;
-
-    if (this.recipeValue !== null) {
-      this._http.get( this.recepieApi + this.recipeValue + this.recepieAppid + this.recepieKey).subscribe((res: any) => {
-        console.log("reciepe search object from edamam api");
-        console.log(res);
-        this.recipeList = Object.keys(res.hits).map(function (k) {
-          const i = res.hits[k].recipe;
-          return {name: i.label, icon: i.image, url: i.url};
-        });
-
-      });
-
-    }
-
-    if (this.placeValue != null && this.placeValue !== '' && this.recipeValue != null && this.recipeValue !== '') {
-      this._http.get( this.placesApi  + this.clientdId + this.clientSecret + this.version
-        + this.near + this.placeValue).subscribe((res: any) => {
-        console.log(res);
-        this.venueList = Object.keys(res.response.venues).map(function (k) {
-          const i = res.response.venues[k];
-          return {name: i.name, location: i.location.formattedAddress, currentLat: '39.0349657', currentLong: '-94.5787524', formattedAddress: i.location.formattedAddress};
-        });
-      });
-    }
+  ngOnInit() {
+    this.titleService.setTitle('Macros');
   }
-}
+
+  getMacroInfo() {
+
+    this.USDAKey = 'YpZ87MY3RksUN8jXJofcb2IFKp5rERkBasgaHE3H';
+    this.userValue = this.userSearch.nativeElement.value;
+    this.macroList = []; // clear results list
+
+    // setup USDA API call based on users input as recipe
+    if (this.userValue !== null || this.userValue !== '') {
+      this._http.get('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + this.USDAKey + '&query='
+        + this.userValue)
+        .subscribe((data: any) => {
+          this.macroList = Object.keys(data.foods).map(function() {        // references first food in API response
+            const m = data.foods[0];
+            return {nutrients: m.foodNutrients};
+          });                                                              // assign needed data to properties
+          console.log('Macro nutrients retrieved.');
+          console.log(this.macroList);
+        });
+    }
+  }}

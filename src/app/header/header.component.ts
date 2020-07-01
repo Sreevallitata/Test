@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -12,7 +13,10 @@ import { Component } from '@angular/core';
     '.container-fluid.ul.li.a.img{ border-radius: 10px}'
   ]
 })
-export class HeaderComponent {
-  constructor() {}
+export class HeaderComponent implements OnInit{
+  constructor(private titleService: Title) {}
 
+  ngOnInit() {
+    this.titleService.setTitle('Home');
   }
+}
